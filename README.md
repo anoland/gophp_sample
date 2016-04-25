@@ -2,8 +2,8 @@ golang で php 拡張を作ってみるテスト
 
 # environment
 * CentOS release 6.7
-* PHP 7.0.0RC4
-* go version go1.5.1 linux/amd64
+* PHP 7.0.1
+* go version go1.5.2 linux/amd64
 
 # build
 
@@ -19,7 +19,7 @@ $ CGO_CFLAGS="-g -O0 -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -DPHP_ATOM_INC \
 -I`php-config --include-dir`/ext \
 -I`php-config --include-dir`/ext/date/lib \
 -DHAVE_CONFIG_H -DCOMPILE_DL_GOPHP -fPIC -DPIC" \
-CGO_LDFLAGS="-Wl,--export-dynamic -Wl,--unresolved-symbols=ignore-all" \
+CGO_LDFLAGS="-Wl,--export-dynamic -Wl,--unresolved-symbols=ignore-all -Wl,-z,nodelete" \
 go build -p 1 -gcflags "-l" -buildmode=c-shared -o modules/gophp.so gophp.go export.go
 
 ```
@@ -33,3 +33,5 @@ php -d extension=`pwd`/modules/gophp.so -r 'echo go_fib(40) . PHP_EOL;'  1.87s u
 
 ```
 
+# see also
+http://www.slideshare.net/do_aki/writing-php-extensions-in-golang
